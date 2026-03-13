@@ -1,144 +1,90 @@
-# BYO-LLM Kit — No Vendor Lock-in
+# BYO-LLM Kit
 
-## What this project is
+Build AI features with a provider-agnostic interface, deterministic local development, and no default vendor lock-in.
 
-A developer-focused template repository for building AI-powered SaaS features in
-Node.js + TypeScript with provider flexibility.
+## Project overview
 
-## Why BYO-LLM
+This template includes:
 
-- Avoid coupling your app to one inference provider.
-- Keep feature code stable while changing providers.
-- Control costs and quality by selecting providers per use case.
-- Use deterministic mock mode for fast local development and CI.
+- A provider abstraction layer for text generation.
+- A deterministic mock provider (default, no API keys required).
+- Hugging Face and Replicate adapters for real inference.
+- A minimal web example that calls providers server-side.
+- CI-friendly scripts for lint, typecheck, test, and build.
 
-## Features
+## 10-minute quickstart (GitHub Codespaces)
 
-- Node.js 20 + pnpm + TypeScript baseline
-- Provider-agnostic adapter architecture
-- Zero-inference mock mode
-- Minimal web example with server-side provider calls
-- GitHub Codespaces devcontainer
-- CI checks: lint, typecheck, test, build
+1. Open this repository in **GitHub Codespaces**.
+2. In the terminal, install dependencies:
+   ```bash
+   pnpm install
+   ```
+3. Start the example app in default mock mode:
+   ```bash
+   pnpm dev
+   ```
+4. Open the forwarded port (`3000`) and submit a prompt in the UI.
 
-## Quickstart
+That flow works without any API keys.
 
-```bash
-pnpm install
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
-```
-
-## Run the web example in Codespaces
-
-The repository now includes a single-screen web demo in `examples/web`.
+## Run the example app
 
 ```bash
-pnpm install
 pnpm dev
 ```
 
-Open the forwarded port (default `3000`) and use the form:
+The example server is in `examples/web/server.mjs` and serves:
 
-- Enter prompt text
-- Submit
-- View generated output
+- `GET /health` for health checks.
+- `POST /api/generate` for text generation requests.
 
-Provider calls are made server-side only via `POST /api/generate`.
+By default:
 
-### Mock mode by default (no keys required)
+- `WEB_PROVIDER=mock`
+- Responses are deterministic and local.
 
-By default, `pnpm dev` uses `WEB_PROVIDER=mock`, so the demo works with zero
-configuration and no external network calls.
+## Switching providers
 
-### Switch providers later
+Keep `WEB_PROVIDER=mock` for local onboarding and CI. When you are ready, switch providers in Codespaces with environment variables.
 
-To switch to Hugging Face:
-
-```bash
-WEB_PROVIDER=huggingface HF_TOKEN=... HF_MODEL=... pnpm dev
-```
-
-To switch to Replicate:
+### Hugging Face
 
 ```bash
-WEB_PROVIDER=replicate REPLICATE_API_TOKEN=... REPLICATE_MODEL=... pnpm dev
+WEB_PROVIDER=huggingface HF_TOKEN=your_token HF_MODEL=your_model pnpm dev
 ```
 
-These providers are server-side adapters and should not be used in browser code.
+Optional:
 
-## Health endpoint and smoke test
+- `HF_PROVIDER` (inference routing hint)
 
-The example server exposes `GET /health` and returns a JSON success payload.
+### Replicate
 
-A smoke test in `test/smoke.test.ts` starts the example server with mock mode,
-hits `/health`, and then posts to `/api/generate` to verify end-to-end flow
-without external network calls.
-
-## Package manager policy
-
-This repository is intentionally pinned to **pnpm** (see `packageManager` in
-`package.json`) to keep local and CI behavior consistent.
-
-- Use `pnpm` for dependency installation and all project scripts.
-- `npm`/`yarn` are not supported workflow targets for this starter kit.
-
-## Example usage
-
-```ts
-import { getStarterKitInfo } from "./src/index.js";
-
-const info = getStarterKitInfo();
-console.log(info);
+```bash
+WEB_PROVIDER=replicate REPLICATE_API_TOKEN=your_token REPLICATE_MODEL=owner/model:version pnpm dev
 ```
 
-## Supported providers
+## Required environment variables
 
-- Hugging Face (`src/providers/hf.ts`)
-- Replicate (`src/providers/replicate.ts`)
-- Mock mode (default for deterministic testing)
+### Mock (default)
 
-## Hugging Face adapter configuration
+- No API keys required.
 
-The Hugging Face adapter reads configuration from environment variables:
+### Hugging Face
 
-- `HF_TOKEN` (required): Hugging Face access token.
-- `HF_MODEL` (required unless passed as `input.model`): model ID to target.
-- `HF_PROVIDER` (optional): inference provider routing hint (for example,
-  `nebius`, `fal-ai`, etc.).
+- `WEB_PROVIDER=huggingface`
+- `HF_TOKEN`
+- `HF_MODEL` (unless supplied per request)
 
-`HuggingFaceProvider` is server-side only and should not be instantiated in
-browser code.
+### Replicate
 
-## Replicate adapter configuration
+- `WEB_PROVIDER=replicate`
+- `REPLICATE_API_TOKEN`
+- `REPLICATE_MODEL` (unless supplied per request)
 
-The Replicate adapter reads configuration from environment variables:
+## Docs
 
-- `REPLICATE_API_TOKEN` (required): Replicate API token used for server-side authentication.
-- `REPLICATE_MODEL` (required unless passed as `input.model`): model version slug to execute via `client.run()`.
+All documentation for GitHub Pages lives under [`docs/`](docs/):
 
-`ReplicateProvider` is server-side only and should not be instantiated in
-browser code.
-
-## Repository structure
-
-```text
-.
-├─ .devcontainer/
-├─ .github/workflows/
-├─ docs/
-├─ examples/
-│  └─ web/
-├─ src/
-├─ test/
-├─ AGENTS.md
-├─ package.json
-├─ tsconfig.json
-└─ README.md
-```
-
-## License
-
-TBD
+- Landing page: `docs/index.html`
+- Codespaces setup: `docs/getting-started.md`
+- Provider setup: `docs/providers.md`
