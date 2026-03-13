@@ -30,6 +30,14 @@ pnpm test
 pnpm build
 ```
 
+## Package manager policy
+
+This repository is intentionally pinned to **pnpm** (see `packageManager` in
+`package.json`) to keep local and CI behavior consistent.
+
+- Use `pnpm` for dependency installation and all project scripts.
+- `npm`/`yarn` are not supported workflow targets for this starter kit.
+
 ## Example usage
 
 ```ts
