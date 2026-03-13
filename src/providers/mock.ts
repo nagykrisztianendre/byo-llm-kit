@@ -17,7 +17,10 @@ export class MockProvider implements LLMProvider {
     const maxTokens = input.maxTokens ?? DEFAULT_MAX_TOKENS;
     const temperature = input.temperature ?? DEFAULT_TEMPERATURE;
     const seed = `${input.prompt}|${model}|${maxTokens}|${temperature}`;
-    const promptHash = createHash("sha256").update(seed).digest("hex").slice(0, 16);
+    const promptHash = createHash("sha256")
+      .update(seed)
+      .digest("hex")
+      .slice(0, 16);
 
     return {
       text: `mock:${promptHash}:${input.prompt}`,
