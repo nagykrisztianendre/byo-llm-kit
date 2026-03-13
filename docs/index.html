@@ -3,217 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BYO-LLM Kit</title>
-    <style>
-      :root {
-        --bg: #f8fafc;
-        --surface: #ffffff;
-        --text: #0f172a;
-        --muted: #475569;
-        --accent: #2563eb;
-        --accent-hover: #1d4ed8;
-        --border: #e2e8f0;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-          Arial, sans-serif;
-        color: var(--text);
-        background: linear-gradient(to bottom, #f8fafc, #eef2ff 35%, #f8fafc 100%);
-        line-height: 1.6;
-      }
-
-      .container {
-        width: 100%;
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 2rem 1.25rem 4rem;
-      }
-
-      header {
-        text-align: center;
-        margin: 2rem 0 3.5rem;
-      }
-
-      header h1 {
-        font-size: clamp(2rem, 5vw, 3rem);
-        margin: 0;
-        letter-spacing: -0.02em;
-      }
-
-      header p {
-        margin: 0.75rem 0 0;
-        color: var(--muted);
-        font-size: 1.1rem;
-      }
-
-      section {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 2rem;
-        margin-bottom: 1.25rem;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
-      }
-
-      .hero {
-        text-align: center;
-        padding: 3rem 2rem;
-      }
-
-      h2 {
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-        font-size: clamp(1.5rem, 3.5vw, 2.1rem);
-        line-height: 1.25;
-      }
-
-      h3 {
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-        font-size: 1.25rem;
-      }
-
-      .subheadline,
-      .section-copy {
-        color: var(--muted);
-        margin-bottom: 1.25rem;
-      }
-
-      ul {
-        margin: 0;
-        padding-left: 1.15rem;
-      }
-
-      li + li {
-        margin-top: 0.45rem;
-      }
-
-      ol {
-        margin: 0;
-        padding-left: 1.2rem;
-      }
-
-      .actions {
-        display: inline-flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 0.75rem;
-      }
-
-      .button,
-      .link {
-        display: inline-block;
-        text-decoration: none;
-        font-weight: 600;
-      }
-
-      .button {
-        background: var(--accent);
-        color: #fff;
-        padding: 0.72rem 1.1rem;
-        border-radius: 10px;
-      }
-
-      .button:hover {
-        background: var(--accent-hover);
-      }
-
-      .link {
-        color: var(--accent);
-        padding: 0.72rem 0;
-      }
-
-      .cta {
-        text-align: center;
-        padding: 2.5rem 2rem;
-      }
-
-      footer {
-        text-align: center;
-        color: var(--muted);
-        margin-top: 2rem;
-        font-size: 0.95rem;
-      }
-
-      @media (max-width: 640px) {
-        section {
-          padding: 1.4rem;
-        }
-
-        .hero,
-        .cta {
-          padding: 2rem 1.25rem;
-        }
-      }
-    </style>
+    <title>BYO-LLM Kit — No Vendor Lock-in</title>
   </head>
   <body>
-    <main class="container">
-      <header>
-        <h1>BYO-LLM Kit</h1>
-        <p>Ship AI features without vendor lock-in</p>
-      </header>
-
-      <section class="hero">
-        <h2>Ship BYO-LLM features in 30 minutes</h2>
-        <p class="subheadline">
-          A developer-first template that works with Hugging Face, Replicate, or mock mode.
-        </p>
-        <div class="actions">
-          <a class="button" href="https://gumroad.com/l/byo-llm-kit">Buy on Gumroad</a>
-          <a class="link" href="https://github.com">View GitHub repo</a>
-        </div>
-      </section>
+    <main>
+      <h1>BYO-LLM Kit — No Vendor Lock-in</h1>
+      <p>
+        A developer-first Node.js + TypeScript template for shipping AI features
+        with full provider control.
+      </p>
 
       <section>
-        <h3>What you get</h3>
+        <h2>Value proposition</h2>
         <ul>
-          <li>Codespaces-ready template</li>
-          <li>Provider adapters (Hugging Face + Replicate)</li>
-          <li>Zero-inference mock mode</li>
-          <li>CI pipeline</li>
-          <li>Example AI web app</li>
-          <li>Documentation</li>
+          <li>
+            Build AI product features without coupling to one model vendor.
+          </li>
+          <li>Start in deterministic mock mode, then add provider adapters.</li>
+          <li>
+            Keep app logic stable while changing inference providers over time.
+          </li>
         </ul>
       </section>
 
       <section>
-        <h3>Why BYO-LLM</h3>
-        <p class="section-copy">
-          BYO-LLM Kit is built for teams that need flexibility and control. Avoid vendor lock-in,
-          ship without OpenAI dependency, support customer-supplied API keys, and get started fast
-          in Codespaces.
-        </p>
+        <h2>What you get</h2>
+        <ul>
+          <li>TypeScript starter structure for AI feature development.</li>
+          <li>Provider-agnostic adapter pattern.</li>
+          <li>Mock-only mode for local development and CI testing.</li>
+          <li>GitHub Codespaces devcontainer setup.</li>
+          <li>CI workflow with lint, typecheck, tests, and build checks.</li>
+        </ul>
       </section>
 
       <section>
-        <h3>How it works</h3>
+        <h2>How it works</h2>
         <ol>
-          <li>Use the template</li>
-          <li>Open in Codespaces</li>
-          <li>Run the example app</li>
-          <li>Add your own provider key</li>
+          <li>Clone the template and open it in Codespaces.</li>
+          <li>Build features against the adapter interface in mock mode.</li>
+          <li>Add or swap provider adapters as needed.</li>
+          <li>Ship with the same app-facing feature code.</li>
         </ol>
       </section>
 
-      <section class="cta">
-        <h2>Ready to ship AI features your way?</h2>
-        <p class="subheadline">
-          Get the BYO-LLM Kit and launch with a production-minded developer workflow.
-        </p>
-        <a class="button" href="https://gumroad.com/l/byo-llm-kit">Buy on Gumroad</a>
-      </section>
-
-      <footer>
-        BYO-LLM Kit — Built for developers who want full control over their AI stack.
-      </footer>
+      <p><a href="#">Buy the full BYO-LLM Kit on Gumroad</a></p>
     </main>
   </body>
 </html>
