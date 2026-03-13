@@ -2,7 +2,8 @@
 
 ## What this project is
 
-A developer-focused template repository for building AI-powered SaaS features in Node.js + TypeScript with provider flexibility.
+A developer-focused template repository for building AI-powered SaaS features in
+Node.js + TypeScript with provider flexibility.
 
 ## Why BYO-LLM
 

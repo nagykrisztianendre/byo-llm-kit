@@ -10,6 +10,6 @@ export function getStarterKitInfo(): StarterKitInfo {
   return {
     name: 'byo-llm-kit',
     supportedProviders: ['huggingface', 'replicate'],
-    networkMode: 'mock-only'
+    networkMode: 'mock-only',
   };
 }

@@ -2,9 +2,11 @@
 
 ## Problem
 
-Developers want to ship AI features quickly, but many starter kits lock them to one model vendor.
+Developers want to ship AI features quickly, but many starter kits lock them to
+one model vendor.
 
 Common issues:
+
 - Provider lock-in makes long-term costs hard to control.
 - Switching providers later requires major refactors.
 - Teams need deterministic local development and test workflows.
@@ -12,12 +14,15 @@ Common issues:
 
 ## Solution
 
-BYO-LLM Kit is a Node.js + TypeScript template for building AI-powered SaaS features with provider flexibility.
+BYO-LLM Kit is a Node.js + TypeScript template for building AI-powered SaaS
+features with provider flexibility.
 
 Core approach:
+
 - Standardize provider access behind a common adapter interface.
 - Start with a reliable zero-inference mock mode for local development and CI.
-- Support real provider adapters (Hugging Face and Replicate) without changing app-level feature code.
+- Support real provider adapters (Hugging Face and Replicate) without changing
+  app-level feature code.
 - Provide a reproducible developer environment with Codespaces + devcontainer.
 
 ## Key Features
