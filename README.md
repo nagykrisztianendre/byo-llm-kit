@@ -33,7 +33,7 @@ pnpm build
 ## Example usage
 
 ```ts
-import { getStarterKitInfo } from './src/index.js';
+import { getStarterKitInfo } from "./src/index.js";
 
 const info = getStarterKitInfo();
 console.log(info);
