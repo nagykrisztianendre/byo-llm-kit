@@ -1,22 +1,25 @@
-# BYO-LLM Kit
+# BYO-LLM Kit — No Vendor Lock-in
 
-A minimal Node.js + TypeScript starter repository for building AI-powered SaaS features with a **Bring Your Own LLM** architecture.
+## What this project is
 
-This scaffold is intentionally provider-agnostic while reserving adapter slots for:
+A developer-focused template repository for building AI-powered SaaS features in Node.js + TypeScript with provider flexibility.
 
-- Hugging Face
-- Replicate
+## Why BYO-LLM
 
-> Initial version includes only base structure, devcontainer setup, CI, and test tooling.
+- Avoid coupling your app to one inference provider.
+- Keep feature code stable while changing providers.
+- Control costs and quality by selecting providers per use case.
+- Use deterministic mock mode for fast local development and CI.
 
-## Quick start
+## Features
 
-### Local prerequisites
+- Node.js 20 + pnpm + TypeScript baseline
+- Provider-agnostic adapter architecture
+- Zero-inference mock mode
+- GitHub Codespaces devcontainer
+- CI checks: lint, typecheck, test, build
 
-- Node.js 20+
-- pnpm 9+
-
-### Install and run checks
+## Quickstart
 
 ```bash
 pnpm install
@@ -26,54 +29,39 @@ pnpm test
 pnpm build
 ```
 
-## GitHub Codespaces
+## Example usage
 
-1. Open the repository in a Codespace.
-2. Wait for the devcontainer to finish setup.
-3. Run:
+```ts
+import { getStarterKitInfo } from './src/index.js';
 
-```bash
-pnpm i
-pnpm test
+const info = getStarterKitInfo();
+console.log(info);
 ```
 
-The devcontainer uses Node.js 20 and enables pnpm through Corepack.
+## Supported providers
+
+- Hugging Face (planned adapter path)
+- Replicate (planned adapter path)
+- Mock mode (default for deterministic testing)
 
 ## Repository structure
 
 ```text
 .
 ├─ .devcontainer/
-│  └─ devcontainer.json
-├─ .github/
-│  └─ workflows/
-│     └─ ci.yml
+├─ .github/workflows/
+├─ docs/
+│  ├─ buyer-persona.md
+│  ├─ landing-copy.md
+│  └─ product-spec.md
 ├─ src/
-│  └─ index.ts
 ├─ test/
-│  └─ smoke.test.ts
 ├─ AGENTS.md
 ├─ package.json
 ├─ tsconfig.json
 └─ README.md
 ```
 
-## CI workflow
+## License
 
-GitHub Actions runs on both `push` and `pull_request`, executing the following in order:
-
-1. `pnpm lint`
-2. `pnpm typecheck`
-3. `pnpm test`
-4. `pnpm build`
-
-Dependency caching is enabled via `actions/setup-node` + pnpm cache for fast execution.
-
-## Deterministic tests
-
-Tests are run using Vitest and are designed for deterministic, mock-only behavior with no network calls.
-
-## Security notes
-
-- No SDK or environment variable reference is included for any vendor-specific key.
-- Keep secrets in GitHub Codespaces or Actions secrets, never in source control.
+TBD
