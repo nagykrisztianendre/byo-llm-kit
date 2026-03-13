@@ -112,7 +112,9 @@ export class HuggingFaceProvider implements LLMProvider {
         return response.generated_text;
       }
 
-      throw new Error("Hugging Face returned an invalid text generation response");
+      throw new Error(
+        "Hugging Face returned an invalid text generation response",
+      );
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       throw new Error(`Hugging Face text generation failed: ${message}`);

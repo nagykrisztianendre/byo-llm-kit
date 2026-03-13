@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { HuggingFaceProvider, type HFTextGenerationClient } from "../src/providers/hf.js";
+import {
+  HuggingFaceProvider,
+  type HFTextGenerationClient,
+} from "../src/providers/hf.js";
 
 describe("HuggingFaceProvider", () => {
   it("sends text generation request with expected shape", async () => {
