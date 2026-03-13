@@ -50,7 +50,7 @@ console.log(info);
 ## Supported providers
 
 - Hugging Face (`src/providers/hf.ts`)
-- Replicate (planned adapter path)
+- Replicate (`src/providers/replicate.ts`)
 - Mock mode (default for deterministic testing)
 
 ## Hugging Face adapter configuration
@@ -63,6 +63,16 @@ The Hugging Face adapter reads configuration from environment variables:
   `nebius`, `fal-ai`, etc.).
 
 `HuggingFaceProvider` is server-side only and should not be instantiated in
+browser code.
+
+## Replicate adapter configuration
+
+The Replicate adapter reads configuration from environment variables:
+
+- `REPLICATE_API_TOKEN` (required): Replicate API token used for server-side authentication.
+- `REPLICATE_MODEL` (required unless passed as `input.model`): model version slug to execute via `client.run()`.
+
+`ReplicateProvider` is server-side only and should not be instantiated in
 browser code.
 
 ## Repository structure
