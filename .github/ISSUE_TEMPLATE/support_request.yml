@@ -1,0 +1,44 @@
+name: Support request
+description: Ask for onboarding or usage help
+title: "[Support]: "
+labels:
+  - support
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Need help getting started? Share where you're blocked and what you've tried.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      options:
+        - Codespaces setup
+        - Mock mode quickstart
+        - Hugging Face configuration
+        - Replicate configuration
+        - Example web app
+        - CI checks
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What do you need help with?
+    validations:
+      required: true
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What you already tried
+      description: Commands, docs, and troubleshooting steps.
+      render: shell
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: GitHub Codespaces
+    validations:
+      required: true

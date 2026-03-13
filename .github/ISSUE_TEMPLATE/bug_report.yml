@@ -1,0 +1,59 @@
+name: Bug report
+description: Report a reproducible defect in BYO-LLM Kit
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please include steps that reproduce in Codespaces.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+      placeholder: A concise bug summary.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include exact commands and expected vs actual behavior.
+      placeholder: |
+        1. Open Codespaces
+        2. Run pnpm install
+        3. Run pnpm dev
+        4. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: Paste terminal output or attach screenshots.
+      render: shell
+  - type: input
+    id: provider
+    attributes:
+      label: Provider
+      description: Which provider were you using?
+      placeholder: mock | huggingface | replicate
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Codespaces, local machine, CI, etc.
+      placeholder: GitHub Codespaces
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I ran the app in mock mode first.
+          required: false
+        - label: I removed secrets from logs and screenshots.
+          required: true
