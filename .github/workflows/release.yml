@@ -1,0 +1,30 @@
+name: Release Template Zip
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  package-template:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create release zip from tracked files
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          ZIP_NAME="byo-llm-kit-${TAG_NAME}.zip"
+          git archive --format=zip --output "$ZIP_NAME" HEAD
+          echo "ZIP_NAME=$ZIP_NAME" >> "$GITHUB_ENV"
+
+      - name: Upload release zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-${{ github.ref_name }}
+          path: ${{ env.ZIP_NAME }}
+          if-no-files-found: error
+          retention-days: 30
