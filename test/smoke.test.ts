@@ -1,5 +1,5 @@
-import { afterAll, describe, expect, it } from "vitest";
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
+import { afterAll, describe, expect, it } from "vitest";
 
 const TEST_PORT = 43111;
 let serverProcess: ChildProcessWithoutNullStreams | undefined;
@@ -40,7 +40,10 @@ describe("web example smoke", () => {
     await waitForServer(`http://127.0.0.1:${TEST_PORT}/health`);
 
     const healthResponse = await fetch(`http://127.0.0.1:${TEST_PORT}/health`);
-    const healthJson = (await healthResponse.json()) as { ok: boolean; provider: string };
+    const healthJson = (await healthResponse.json()) as {
+      ok: boolean;
+      provider: string;
+    };
 
     expect(healthResponse.status).toBe(200);
     expect(healthJson).toEqual({ ok: true, provider: "mock" });
