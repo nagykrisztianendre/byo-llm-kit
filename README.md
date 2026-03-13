@@ -49,9 +49,21 @@ console.log(info);
 
 ## Supported providers
 
-- Hugging Face (planned adapter path)
+- Hugging Face (`src/providers/hf.ts`)
 - Replicate (planned adapter path)
 - Mock mode (default for deterministic testing)
+
+## Hugging Face adapter configuration
+
+The Hugging Face adapter reads configuration from environment variables:
+
+- `HF_TOKEN` (required): Hugging Face access token.
+- `HF_MODEL` (required unless passed as `input.model`): model ID to target.
+- `HF_PROVIDER` (optional): inference provider routing hint (for example,
+  `nebius`, `fal-ai`, etc.).
+
+`HuggingFaceProvider` is server-side only and should not be instantiated in
+browser code.
 
 ## Repository structure
 
