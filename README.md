@@ -17,6 +17,7 @@ Node.js + TypeScript with provider flexibility.
 - Node.js 20 + pnpm + TypeScript baseline
 - Provider-agnostic adapter architecture
 - Zero-inference mock mode
+- Minimal web example with server-side provider calls
 - GitHub Codespaces devcontainer
 - CI checks: lint, typecheck, test, build
 
@@ -29,6 +30,52 @@ pnpm typecheck
 pnpm test
 pnpm build
 ```
+
+## Run the web example in Codespaces
+
+The repository now includes a single-screen web demo in `examples/web`.
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open the forwarded port (default `3000`) and use the form:
+
+- Enter prompt text
+- Submit
+- View generated output
+
+Provider calls are made server-side only via `POST /api/generate`.
+
+### Mock mode by default (no keys required)
+
+By default, `pnpm dev` uses `WEB_PROVIDER=mock`, so the demo works with zero
+configuration and no external network calls.
+
+### Switch providers later
+
+To switch to Hugging Face:
+
+```bash
+WEB_PROVIDER=huggingface HF_TOKEN=... HF_MODEL=... pnpm dev
+```
+
+To switch to Replicate:
+
+```bash
+WEB_PROVIDER=replicate REPLICATE_API_TOKEN=... REPLICATE_MODEL=... pnpm dev
+```
+
+These providers are server-side adapters and should not be used in browser code.
+
+## Health endpoint and smoke test
+
+The example server exposes `GET /health` and returns a JSON success payload.
+
+A smoke test in `test/smoke.test.ts` starts the example server with mock mode,
+hits `/health`, and then posts to `/api/generate` to verify end-to-end flow
+without external network calls.
 
 ## Package manager policy
 
@@ -82,9 +129,8 @@ browser code.
 ├─ .devcontainer/
 ├─ .github/workflows/
 ├─ docs/
-│  ├─ buyer-persona.md
-│  ├─ landing-copy.md
-│  └─ product-spec.md
+├─ examples/
+│  └─ web/
 ├─ src/
 ├─ test/
 ├─ AGENTS.md

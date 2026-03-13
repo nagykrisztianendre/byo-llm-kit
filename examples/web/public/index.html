@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BYO-LLM Kit Web Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        max-width: 740px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 140px;
+      }
+
+      button {
+        margin-top: 0.75rem;
+        padding: 0.5rem 1rem;
+      }
+
+      pre {
+        background: #f4f4f5;
+        padding: 1rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BYO-LLM Kit Web Example</h1>
+    <p>Enter text and submit to call the server-side provider.</p>
+
+    <form id="prompt-form">
+      <label for="prompt">Prompt</label>
+      <textarea id="prompt" name="prompt" required>
+Write a short hello from mock mode.</textarea
+      >
+      <div>
+        <button type="submit">Generate</button>
+      </div>
+    </form>
+
+    <h2>Output</h2>
+    <pre id="output">No output yet.</pre>
+
+    <script>
+      const form = document.getElementById("prompt-form");
+      const output = document.getElementById("output");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const prompt = document.getElementById("prompt").value;
+        output.textContent = "Loading...";
+
+        try {
+          const response = await fetch("/api/generate", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ prompt }),
+          });
+
+          const payload = await response.json();
+          if (!response.ok) {
+            output.textContent = payload.error || "Request failed";
+            return;
+          }
+
+          output.textContent = payload.text;
+        } catch (error) {
+          output.textContent =
+            error instanceof Error ? error.message : String(error);
+        }
+      });
+    </script>
+  </body>
+</html>

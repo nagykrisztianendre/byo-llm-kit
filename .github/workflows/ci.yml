@@ -37,5 +37,8 @@ jobs:
       - name: Test
         run: pnpm test
 
+      - name: Smoke test (web example)
+        run: pnpm test -- test/smoke.test.ts
+
       - name: Build
         run: pnpm build
