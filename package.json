@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "pnpm build && node examples/web/server.mjs",
+    "verify-install": "pnpm build && node dist/scripts/verify-install.js",
     "build": "tsc -p tsconfig.json",
     "lint": "prettier --check .",
     "typecheck": "tsc --noEmit",
