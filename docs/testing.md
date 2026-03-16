@@ -45,3 +45,33 @@ If a token is missing for a provider, that provider's integration test is skippe
 - Secrets are passed via GitHub Actions secrets and masked in workflow output.
 - Integration tests do not print secrets, prompts, or generated text.
 - Assertions validate output structure only (`text` and metadata shape), avoiding brittle exact-text checks.
+
+## Prompt evaluation workflow
+
+Use the CLI evaluation command to benchmark prompt behavior across providers or prompt versions while keeping assertions focused on structure and metadata.
+
+### Run in mock mode (no keys)
+
+```bash
+byo-llm eval summarize --provider mock --version v1
+```
+
+### Compare providers/versions
+
+```bash
+byo-llm eval summarize --provider mock --provider huggingface --version v1 --version v2
+```
+
+### Evaluate a dataset and export JSON
+
+```bash
+byo-llm eval summarize --provider mock --input-file eval-datasets/summarize.json --output report.json
+```
+
+Dataset files must be JSON arrays with this shape:
+
+```json
+[{ "input": "Long article text" }, { "input": "Another example text" }]
+```
+
+The resulting report includes per-run provider, prompt version, generated text, latency, and metadata.

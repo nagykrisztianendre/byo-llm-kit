@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { pathToFileURL } from "node:url";
+import { runEvaluationCommand } from "../eval/runEvaluation.js";
 import { providerRegistry } from "../providers/router.js";
 import { listPromptNames, runPrompt, type CliIO } from "./runPrompt.js";
 
@@ -48,6 +49,7 @@ function formatHelp(): string {
     "",
     "Commands:",
     "  byo-llm run <promptName> <inputText> [--version <version>] [--provider <name>] [--model <name>]",
+    "  byo-llm eval <promptName> [--provider <name>] [--version <version>] [--input-file <file>] [--output <file>]",
     "  byo-llm list-prompts",
     "  byo-llm --help",
     "",
@@ -92,6 +94,19 @@ export async function runCli(
       io.error(message);
       return 1;
     }
+  }
+
+  if (command === "eval") {
+    const [promptName, ...flags] = rest;
+
+    if (!promptName) {
+      io.error(
+        "Usage: byo-llm eval <promptName> [--provider <name>] [--version <version>] [--input-file <file>] [--output <file>]",
+      );
+      return 1;
+    }
+
+    return runEvaluationCommand(promptName, flags, io);
   }
 
   io.error(`Unknown command: ${command}`);

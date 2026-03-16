@@ -101,6 +101,34 @@ REPLICATE_MODEL=...
 
 For full policy details, see [`SECURITY.md`](./SECURITY.md) and [`PRIVACY.md`](./PRIVACY.md).
 
+## Prompt evaluation CLI
+
+Use the evaluation command to compare the same prompt across providers and prompt versions with structured output (text, latency, and metadata).
+
+```bash
+byo-llm eval summarize --provider mock --version v1
+```
+
+Compare multiple providers and versions (repeat flags or pass comma-separated values):
+
+```bash
+byo-llm eval summarize --provider mock --provider huggingface --version v1 --version v2
+```
+
+Run evaluation from a dataset file and export a machine-readable report:
+
+```bash
+byo-llm eval summarize --provider mock --input-file eval-datasets/summarize.json --output report.json
+```
+
+Dataset format (`eval-datasets/summarize.json`):
+
+```json
+[{ "input": "Long article text" }, { "input": "Another example text" }]
+```
+
+The default provider is `mock`, so evaluation works without API keys in local development and CI.
+
 ## Optional provider integration tests (manual)
 
 Default CI stays fully mock-only. Real-provider checks are separated into an **opt-in GitHub Actions workflow** that runs only when manually triggered.
