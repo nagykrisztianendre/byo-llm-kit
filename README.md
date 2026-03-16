@@ -81,6 +81,47 @@ WEB_PROVIDER=replicate REPLICATE_API_TOKEN=your_token REPLICATE_MODEL=owner/mode
 - `REPLICATE_API_TOKEN`
 - `REPLICATE_MODEL` (unless supplied per request)
 
+## Optional provider integration tests (manual)
+
+Default CI stays fully mock-only. Real-provider checks are separated into an **opt-in GitHub Actions workflow** that runs only when manually triggered.
+
+- Workflow file: `.github/workflows/integration.yml`
+- Trigger: `workflow_dispatch` only
+- Purpose: buyer/maintainer validation with customer-supplied provider keys
+
+### Run from GitHub Actions
+
+1. Open **Actions** in GitHub.
+2. Select **Integration Tests**.
+3. Click **Run workflow**.
+
+### Repository secrets used by the workflow
+
+Hugging Face:
+
+- `HF_TOKEN` (required to run Hugging Face integration test)
+- `HF_MODEL` (optional override)
+- `HF_PROVIDER` (optional routing hint)
+
+Replicate:
+
+- `REPLICATE_API_TOKEN` (required to run Replicate integration test)
+- `REPLICATE_MODEL` (optional override)
+
+If a provider token is missing, that provider test is skipped cleanly while other configured provider tests continue.
+
+Run integration tests locally (optional):
+
+```bash
+pnpm test:integration
+```
+
+Normal test command remains mock-only:
+
+```bash
+pnpm test
+```
+
 ## Docs
 
 All documentation for GitHub Pages lives under [`docs/`](docs/):
@@ -88,6 +129,7 @@ All documentation for GitHub Pages lives under [`docs/`](docs/):
 - Landing page: `docs/index.html`
 - Codespaces setup: `docs/getting-started.md`
 - Provider setup: `docs/providers.md`
+- Testing strategy: `docs/testing.md`
 
 ## Golden tests for prompts
 
