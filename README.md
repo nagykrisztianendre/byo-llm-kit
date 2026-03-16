@@ -88,3 +88,27 @@ All documentation for GitHub Pages lives under [`docs/`](docs/):
 - Landing page: `docs/index.html`
 - Codespaces setup: `docs/getting-started.md`
 - Provider setup: `docs/providers.md`
+
+## Golden tests for prompts
+
+Golden tests let you pin prompt behavior to stable, reviewable expectations. In this kit, golden tests run against the deterministic mock provider, so they stay fast and do not make network calls.
+
+- Golden helper utilities live in `src/testing/golden.ts`.
+- Prompt fixtures live in `tests/fixtures/prompts/`.
+- Golden tests live in `tests/golden/`.
+
+### Add a new golden test
+
+1. Create a fixture JSON file under `tests/fixtures/prompts/` with:
+   - prompt name and args
+   - generation options (model, maxTokens, temperature)
+   - expected metadata and required text snippets
+2. Add a `*.golden.test.ts` test under `tests/golden/`.
+3. Resolve the prompt from the registry, render it, and call `generateText(...)` (mock mode by default).
+4. Use `assertGoldenMatch(...)` for partial structured assertions and `assertTextContains(...)` for stable text snippets.
+
+Run all tests (including golden tests):
+
+```bash
+pnpm test
+```
