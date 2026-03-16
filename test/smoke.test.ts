@@ -29,7 +29,7 @@ describe("web example smoke", () => {
       env: {
         ...process.env,
         PORT: String(TEST_PORT),
-        WEB_PROVIDER: "mock",
+        LLM_PROVIDER: "mock",
       },
     });
 
