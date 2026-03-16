@@ -3,9 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BYO-LLM Kit Docs</title>
+    <title>BYO-LLM Kit | Ship Fast Without Lock-In</title>
+    <meta
+      name="description"
+      content="Ship BYO-LLM features fast with a provider-agnostic starter kit: Codespaces template, CI, adapters for Hugging Face + Replicate, and deterministic mock mode."
+    />
     <style>
+      :root {
+        --bg: #f3f6fb;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --line: #dbe3ef;
+        --primary: #0f172a;
+        --primary-hover: #1e293b;
+        --accent: #0ea5e9;
+        --ok: #0b8a4a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
+        margin: 0;
         font-family:
           Inter,
           system-ui,
@@ -13,136 +34,299 @@
           Segoe UI,
           Roboto,
           sans-serif;
-        margin: 0;
-        line-height: 1.5;
-        color: #111827;
-        background: #f9fafb;
+        line-height: 1.6;
+        color: var(--text);
+        background: linear-gradient(
+          180deg,
+          #eff4fb 0%,
+          var(--bg) 30%,
+          #f8fafc 100%
+        );
       }
 
       main {
-        max-width: 860px;
+        max-width: 920px;
         margin: 0 auto;
         padding: 2rem 1rem 3rem;
       }
 
       h1,
-      h2 {
+      h2,
+      h3 {
         line-height: 1.2;
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(1.9rem, 4vw, 2.9rem);
+        letter-spacing: -0.02em;
+      }
+
+      h2 {
+        font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+        margin-bottom: 0.75rem;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .hero,
+      section {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+      }
+
+      .hero {
+        padding: 1.6rem;
+      }
+
+      .subheadline {
+        margin-top: 0.9rem;
+        max-width: 70ch;
+        color: var(--muted);
+      }
+
+      .cta-row {
+        margin-top: 1.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.8rem 1rem;
+      }
+
+      .cta {
+        display: inline-block;
+        padding: 0.72rem 1.12rem;
+        border-radius: 9px;
+        text-decoration: none;
+        background: var(--primary);
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .cta:hover,
+      .cta:focus-visible {
+        background: var(--primary-hover);
+      }
+
+      .trust-line {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .stack {
+        margin-top: 1rem;
+        display: grid;
+        gap: 1rem;
       }
 
       section {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 1rem 1.25rem;
-        margin-top: 1rem;
+        padding: 1.2rem 1.25rem;
       }
 
-      code {
-        background: #f3f4f6;
-        padding: 0.1rem 0.35rem;
-        border-radius: 4px;
+      ul,
+      ol {
+        margin: 0.65rem 0 0;
+        padding-left: 1.15rem;
       }
 
-      a.cta {
-        display: inline-block;
-        margin-top: 1rem;
-        padding: 0.65rem 1rem;
-        border-radius: 8px;
-        text-decoration: none;
-        background: #111827;
-        color: #ffffff;
+      li + li {
+        margin-top: 0.45rem;
       }
 
-      pre {
-        background: #0f172a;
-        color: #e2e8f0;
-        padding: 0.75rem;
-        border-radius: 8px;
-        overflow-x: auto;
+      .grid-two {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.18rem 0.56rem;
+        border-radius: 999px;
+        border: 1px solid #bae6fd;
+        background: #f0f9ff;
+        color: #075985;
+        font-size: 0.82rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .checklist li::marker {
+        color: var(--ok);
+      }
+
+      .faq-item + .faq-item {
+        margin-top: 0.95rem;
+        padding-top: 0.95rem;
+        border-top: 1px solid var(--line);
+      }
+
+      .faq-item h3 {
+        font-size: 1rem;
+      }
+
+      .faq-item p {
+        color: var(--muted);
+        margin-top: 0.35rem;
+      }
+
+      .final-cta {
+        text-align: center;
+        padding: 1.5rem 1.25rem;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding-top: 1.1rem;
+        }
+
+        .hero,
+        section {
+          border-radius: 12px;
+        }
+
+        .grid-two {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>Ship BYO-LLM features in 30 minutes — no vendor lock-in</h1>
-      <p>
-        BYO-LLM Kit is a fast Node.js + TypeScript starter for teams that want
-        to prototype in mock mode and switch providers later without rewriting
-        product logic.
-      </p>
-
-      <section>
-        <h2>What the kit includes</h2>
-        <ul>
-          <li>Provider abstraction for generation workflows.</li>
-          <li>Deterministic mock provider for keyless local development.</li>
-          <li>Hugging Face and Replicate adapters.</li>
-          <li>Minimal example web app with server-side provider calls.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Supported providers</h2>
-        <ul>
-          <li>
-            <strong>Mock</strong> (default): zero keys, deterministic output.
-          </li>
-          <li>
-            <strong>Hugging Face</strong>: configure <code>HF_TOKEN</code> and
-            <code>HF_MODEL</code>.
-          </li>
-          <li>
-            <strong>Replicate</strong>: configure
-            <code>REPLICATE_API_TOKEN</code> and <code>REPLICATE_MODEL</code>.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>How it works in Codespaces</h2>
-        <ol>
-          <li>Open this repository in GitHub Codespaces.</li>
-          <li>Run <code>pnpm install</code>.</li>
-          <li>
-            Run <code>pnpm dev</code> and open forwarded port <code>3000</code>.
-          </li>
-          <li>Test with mock mode first, then switch providers when ready.</li>
-        </ol>
-        <p>
-          Continue with the setup guides:
-          <a href="./getting-started.md">Getting Started</a> ·
-          <a href="./providers.md">Provider Configuration</a>
+      <header class="hero">
+        <span class="pill">BYO-LLM starter kit</span>
+        <h1>Ship BYO-LLM features fast, without vendor lock-in</h1>
+        <p class="subheadline">
+          A technical starter pack built for rapid delivery: Codespaces-ready
+          template repo, CI workflow, provider adapters, and deterministic mock
+          mode so you can ship before picking a model provider.
         </p>
-      </section>
+        <div class="cta-row">
+          <a
+            class="cta"
+            href="https://krisztianova71.gumroad.com/l/bnzakr"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Buy on Gumroad – $79</a
+          >
+          <span class="trust-line"
+            >Instant download. No hosted service required.</span
+          >
+        </div>
+      </header>
 
-      <section>
-        <h2>Demo</h2>
-        <p>
-          Run the CLI in mock mode to showcase deterministic results without API
-          keys.
-        </p>
-        <pre><code>byo-llm run summarize "Long article text"
-byo-llm eval summarize</code></pre>
-      </section>
+      <div class="stack">
+        <section aria-labelledby="what-you-get">
+          <h2 id="what-you-get">What you get</h2>
+          <ul class="checklist">
+            <li>Template repo for BYO-LLM application scaffolding.</li>
+            <li>Hugging Face adapter.</li>
+            <li>Replicate adapter.</li>
+            <li>Deterministic mock mode for local and CI-safe development.</li>
+            <li>Example web app with server-side provider usage.</li>
+            <li>CI workflow for lint, typecheck, test, and build checks.</li>
+            <li>Docs and onboarding guides for quick setup.</li>
+          </ul>
+        </section>
 
-      <section>
-        <h2>Demo assets</h2>
-        <p>
-          This repository keeps demo artifacts text-only for reproducibility and
-          policy compliance. Use <code>demo-output.txt</code> for terminal demo
-          content and regenerate optional screenshots locally when needed.
-        </p>
-      </section>
+        <section aria-labelledby="who-this-is-for">
+          <h2 id="who-this-is-for">Who this is for</h2>
+          <ul>
+            <li>Indie developers shipping AI-powered side projects quickly.</li>
+            <li>
+              Small agencies delivering client prototypes without committing to
+              one inference vendor.
+            </li>
+            <li>
+              Product engineers building internal tools or proof-of-concept
+              workflows.
+            </li>
+          </ul>
+        </section>
 
-      <a
-        class="cta"
-        href="https://krisztianova71.gumroad.com/l/bnzakr"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Buy on Gumroad – $79
-      </a>
+        <section aria-labelledby="trust-and-objections">
+          <h2 id="trust-and-objections">Technical fit and common objections</h2>
+          <div class="grid-two">
+            <ul>
+              <li>
+                <strong>No OpenAI dependency.</strong> Use Hugging Face or
+                Replicate.
+              </li>
+              <li>
+                <strong>Bring your own keys.</strong> No platform lock-in or
+                forced billing path.
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <strong>Server-side provider usage.</strong> Keep secrets off
+                the client.
+              </li>
+              <li>
+                <strong>Mock mode with zero keys.</strong> Build and test
+                without external calls.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section aria-labelledby="faq">
+          <h2 id="faq">FAQ</h2>
+          <div class="faq-item">
+            <h3>Do I need an OpenAI key?</h3>
+            <p>
+              No. The kit is designed to avoid OpenAI dependency and includes
+              Hugging Face, Replicate, and mock mode paths.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Does this include hosted inference?</h3>
+            <p>
+              No. This is a starter/template pack. You connect your own provider
+              accounts and keys.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Who is this for?</h3>
+            <p>
+              Developers and teams who need to ship BYO-LLM features quickly,
+              especially for prototypes, internal tools, and early product
+              iterations.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I get the files after purchase?</h3>
+            <p>
+              Checkout is on Gumroad. After purchase, you get an instant
+              download link with the package contents.
+            </p>
+          </div>
+        </section>
+
+        <section class="final-cta" aria-labelledby="final-cta-title">
+          <h2 id="final-cta-title">Ready to ship your BYO-LLM baseline?</h2>
+          <p class="subheadline" style="margin: 0.7rem auto 0; max-width: 58ch">
+            Start from a practical, provider-agnostic foundation with mock mode,
+            adapters, and CI already wired in.
+          </p>
+          <div class="cta-row" style="justify-content: center">
+            <a
+              class="cta"
+              href="https://krisztianova71.gumroad.com/l/bnzakr"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Buy on Gumroad – $79</a
+            >
+            <span class="trust-line"
+              >Instant download. No hosted service required.</span
+            >
+          </div>
+        </section>
+      </div>
     </main>
   </body>
 </html>
