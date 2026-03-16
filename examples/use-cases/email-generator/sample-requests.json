@@ -1,0 +1,14 @@
+[
+  {
+    "request": "Write a follow-up email after a job interview",
+    "tone": "warm",
+    "audience": "hiring manager",
+    "purpose": "thank them and restate fit"
+  },
+  {
+    "request": "Draft a customer onboarding kickoff email",
+    "tone": "professional",
+    "audience": "new enterprise customer",
+    "purpose": "share timeline and next steps"
+  }
+]

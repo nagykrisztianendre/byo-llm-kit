@@ -1,0 +1,5 @@
+{
+  "name": "document-qa",
+  "version": "v1",
+  "description": "Answer user questions by extracting facts from a provided document"
+}

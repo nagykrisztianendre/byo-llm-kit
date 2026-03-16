@@ -12,6 +12,11 @@ interface ParsedRunFlags {
   provider?: string;
   model?: string;
   version?: string;
+  tone?: string;
+  audience?: string;
+  purpose?: string;
+  file?: string;
+  question?: string;
 }
 
 function parseRunFlags(flags: string[]): ParsedRunFlags {
@@ -19,21 +24,52 @@ function parseRunFlags(flags: string[]): ParsedRunFlags {
 
   for (let index = 0; index < flags.length; index += 1) {
     const flag = flags[index];
+    const value = flags[index + 1];
 
     if (flag === "--provider") {
-      parsed.provider = flags[index + 1];
+      parsed.provider = value;
       index += 1;
       continue;
     }
 
     if (flag === "--model") {
-      parsed.model = flags[index + 1];
+      parsed.model = value;
       index += 1;
       continue;
     }
 
     if (flag === "--version") {
-      parsed.version = flags[index + 1];
+      parsed.version = value;
+      index += 1;
+      continue;
+    }
+
+    if (flag === "--tone") {
+      parsed.tone = value;
+      index += 1;
+      continue;
+    }
+
+    if (flag === "--audience") {
+      parsed.audience = value;
+      index += 1;
+      continue;
+    }
+
+    if (flag === "--purpose") {
+      parsed.purpose = value;
+      index += 1;
+      continue;
+    }
+
+    if (flag === "--file") {
+      parsed.file = value;
+      index += 1;
+      continue;
+    }
+
+    if (flag === "--question") {
+      parsed.question = value;
       index += 1;
       continue;
     }
@@ -49,7 +85,9 @@ function formatHelp(): string {
     "byo-llm CLI",
     "",
     "Commands:",
-    "  byo-llm run <promptName> <inputText> [--version <version>] [--provider <name>] [--model <name>]",
+    "  byo-llm run <promptName> [inputText] [--version <version>] [--provider <name>] [--model <name>]",
+    "  byo-llm run email-generator <request> [--tone <tone>] [--audience <audience>] [--purpose <purpose>]",
+    "  byo-llm run document-qa [documentText] [--file <path>] --question <question>",
     "  byo-llm eval <promptName> [--provider <name>] [--version <version>] [--input-file <file>] [--output <file>]",
     "  byo-llm verify",
     "  byo-llm list-prompts",
@@ -58,6 +96,24 @@ function formatHelp(): string {
     `Available prompts: ${listPromptNames().join(", ")}`,
     `Provider options: ${PROVIDERS.join(", ")}`,
   ].join("\n");
+}
+
+function splitRunArgs(args: string[]): {
+  inputText?: string;
+  flags: string[];
+} {
+  if (args.length === 0) {
+    return { flags: [] };
+  }
+
+  if (args[0].startsWith("--")) {
+    return { flags: args };
+  }
+
+  return {
+    inputText: args[0],
+    flags: args.slice(1),
+  };
 }
 
 export async function runCli(
@@ -77,16 +133,17 @@ export async function runCli(
   }
 
   if (command === "run") {
-    const [promptName, inputText, ...flags] = rest;
+    const [promptName, ...runArgs] = rest;
 
-    if (!promptName || !inputText) {
+    if (!promptName) {
       io.error(
-        "Usage: byo-llm run <promptName> <inputText> [--version <version>] [--provider <name>] [--model <name>]",
+        "Usage: byo-llm run <promptName> [inputText] [--version <version>] [--provider <name>] [--model <name>]",
       );
       return 1;
     }
 
     try {
+      const { inputText, flags } = splitRunArgs(runArgs);
       const parsedFlags = parseRunFlags(flags);
       const output = await runPrompt(promptName, inputText, parsedFlags);
       io.log(output);
