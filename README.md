@@ -10,6 +10,7 @@ This template includes:
 - A deterministic mock provider (default, no API keys required).
 - Hugging Face and Replicate adapters for real inference.
 - A minimal web example that calls providers server-side.
+- A Next.js App Router example for production-style integration.
 - CI-friendly scripts for lint, typecheck, test, and build.
 
 ## 10-minute quickstart (GitHub Codespaces)
@@ -80,6 +81,49 @@ WEB_PROVIDER=replicate REPLICATE_API_TOKEN=your_token REPLICATE_MODEL=owner/mode
 - `WEB_PROVIDER=replicate`
 - `REPLICATE_API_TOKEN`
 - `REPLICATE_MODEL` (unless supplied per request)
+
+## Next.js App Router example
+
+A production-style example is available in [`examples/nextjs`](./examples/nextjs). It demonstrates:
+
+- server-only provider execution through `app/api/generate/route.ts`
+- provider selection at request time with the existing router
+- a simple `/playground` UI using a client component
+- default mock mode so it runs without API keys
+
+Run it locally:
+
+```bash
+cd examples/nextjs
+pnpm install
+pnpm dev
+```
+
+Then open `http://localhost:3000/playground`.
+
+### Next.js provider configuration
+
+The route uses `loadConfig()` and overrides `provider` from the request body.
+
+Default (mock mode):
+
+```bash
+LLM_PROVIDER=mock
+```
+
+Hugging Face:
+
+```bash
+LLM_PROVIDER=huggingface HF_TOKEN=your_token HF_MODEL=your_model pnpm dev
+```
+
+Replicate:
+
+```bash
+LLM_PROVIDER=replicate REPLICATE_API_TOKEN=your_token REPLICATE_MODEL=owner/model:version pnpm dev
+```
+
+You can still switch providers from the UI selector (`mock`, `huggingface`, `replicate`) for each generation request.
 
 ## Security and privacy guidance
 
@@ -178,6 +222,7 @@ All documentation for GitHub Pages lives under [`docs/`](docs/):
 - Codespaces setup: `docs/getting-started.md`
 - Provider setup: `docs/providers.md`
 - Testing strategy: `docs/testing.md`
+- Example applications: `docs/examples.md`
 
 ## Golden tests for prompts
 
