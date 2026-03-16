@@ -81,6 +81,26 @@ WEB_PROVIDER=replicate REPLICATE_API_TOKEN=your_token REPLICATE_MODEL=owner/mode
 - `REPLICATE_API_TOKEN`
 - `REPLICATE_MODEL` (unless supplied per request)
 
+## Security and privacy guidance
+
+This is a BYO-key template: provider credentials stay in your infrastructure.
+
+- Store provider keys in runtime secret managers (for example GitHub Secrets for CI).
+- Keep `HF_TOKEN` and `REPLICATE_API_TOKEN` in secrets, not source files.
+- Never commit `.env` files or paste credentials into logs.
+- The template includes redaction helpers to sanitize token-like strings in surfaced errors.
+
+Example: local development with an untracked `.env` file:
+
+```bash
+HF_TOKEN=...
+HF_MODEL=...
+REPLICATE_API_TOKEN=...
+REPLICATE_MODEL=...
+```
+
+For full policy details, see [`SECURITY.md`](./SECURITY.md) and [`PRIVACY.md`](./PRIVACY.md).
+
 ## Optional provider integration tests (manual)
 
 Default CI stays fully mock-only. Real-provider checks are separated into an **opt-in GitHub Actions workflow** that runs only when manually triggered.
