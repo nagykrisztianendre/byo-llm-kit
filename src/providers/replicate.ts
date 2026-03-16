@@ -4,6 +4,7 @@ import {
   type GenerateTextOutput,
   type LLMProvider,
 } from "./types.js";
+import { redactErrorMessage } from "../security/redactSecrets.js";
 
 const DEFAULT_MAX_TOKENS = 128;
 const DEFAULT_TEMPERATURE = 0;
@@ -107,8 +108,9 @@ export class ReplicateProvider implements LLMProvider {
 
       throw new Error("Replicate returned an invalid response");
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      throw new Error(`Replicate text generation failed: ${message}`);
+      throw new Error(
+        `Replicate text generation failed: ${redactErrorMessage(error)}`,
+      );
     }
   }
 

@@ -53,4 +53,20 @@ describe("HuggingFaceProvider", () => {
       "Hugging Face text generation failed: rate limited",
     );
   });
+
+  it("redacts token-like values from surfaced errors", async () => {
+    const provider = new HuggingFaceProvider({
+      token: "hf_test_token",
+      model: "test-model",
+      client: {
+        textGeneration: vi
+          .fn<HFTextGenerationClient["textGeneration"]>()
+          .mockRejectedValue(new Error("authorization failed for hf_12345678")),
+      },
+    });
+
+    await expect(provider.generateText({ prompt: "hello" })).rejects.toThrow(
+      "Hugging Face text generation failed: authorization failed for [REDACTED]",
+    );
+  });
 });

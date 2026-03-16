@@ -31,6 +31,27 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Security guardrails (secret hygiene)
+        run: |
+          set -euo pipefail
+
+          if rg --hidden --no-ignore-vcs -n "OPENAI[_-]?API[_-]?KEY"             --glob "!pnpm-lock.yaml"             --glob "!SECURITY.md"             --glob "!README.md"; then
+            echo "Found forbidden OpenAI API key reference."
+            exit 1
+          fi
+
+          tracked_env_files="$(git ls-files | rg -n '(^|/)\.env(\..+)?$' || true)"
+          if [ -n "$tracked_env_files" ]; then
+            echo "Tracked .env files are not allowed:"
+            echo "$tracked_env_files"
+            exit 1
+          fi
+
+          if rg --hidden --no-ignore-vcs -n "(hf_[A-Za-z0-9]{12,}|r8_[A-Za-z0-9]{12,}|sk_[A-Za-z0-9]{12,})"             --glob "!pnpm-lock.yaml"; then
+            echo "Potential token-like secret found in repository."
+            exit 1
+          fi
+
       - name: Typecheck
         run: pnpm typecheck
 

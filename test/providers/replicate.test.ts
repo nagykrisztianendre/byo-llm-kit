@@ -69,4 +69,20 @@ describe("ReplicateProvider", () => {
       "Replicate text generation failed: provider unavailable",
     );
   });
+
+  it("redacts token-like values from surfaced errors", async () => {
+    const provider = new ReplicateProvider({
+      token: "r8_test_token",
+      model: "meta/meta-llama-3-8b-instruct",
+      client: {
+        run: vi
+          .fn<ReplicateClient["run"]>()
+          .mockRejectedValue(new Error("denied token=r8_abcd1234")),
+      },
+    });
+
+    await expect(provider.generateText({ prompt: "hello" })).rejects.toThrow(
+      "Replicate text generation failed: denied token=[REDACTED]",
+    );
+  });
 });

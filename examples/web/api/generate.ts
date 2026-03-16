@@ -5,6 +5,7 @@ import {
   resolveProviderName,
 } from "../../../src/providers/router.js";
 import type { ProviderName } from "../../../src/providers/types.js";
+import { redactErrorMessage } from "../../../src/security/redactSecrets.js";
 
 interface GenerateRequestBody {
   provider: ProviderName;
@@ -71,7 +72,6 @@ export async function handleGenerateRequest(
       model: result.metadata.model,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    sendJson(response, 400, { error: message });
+    sendJson(response, 400, { error: redactErrorMessage(error) });
   }
 }
