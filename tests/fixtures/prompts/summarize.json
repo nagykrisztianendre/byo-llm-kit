@@ -1,0 +1,28 @@
+{
+  "promptName": "summarize",
+  "promptArgs": {
+    "text": "BYO-LLM kit provides a provider-agnostic TypeScript scaffold.",
+    "audience": "product managers"
+  },
+  "generation": {
+    "model": "mock-llm-v1",
+    "maxTokens": 64,
+    "temperature": 0
+  },
+  "expected": {
+    "metadata": {
+      "provider": "mock",
+      "model": "mock-llm-v1",
+      "maxTokens": 64,
+      "temperature": 0
+    },
+    "textStartsWith": "mock:",
+    "textContains": [
+      "You are a concise assistant.",
+      "Target audience: product managers.",
+      "Provide a short summary using 3 bullet points.",
+      "Text to summarize:",
+      "BYO-LLM kit provides a provider-agnostic TypeScript scaffold."
+    ]
+  }
+}
