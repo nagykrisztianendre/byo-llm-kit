@@ -10,7 +10,8 @@
     "declaration": true,
     "outDir": "dist",
     "rootDir": ".",
-    "types": ["node", "vitest/globals"]
+    "types": ["node", "vitest/globals"],
+    "jsx": "react-jsx"
   },
   "include": ["src", "test", "examples/web"],
   "exclude": ["dist", "node_modules"]
