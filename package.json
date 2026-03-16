@@ -13,7 +13,8 @@
     "lint": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "packageManager": "pnpm@9.15.0",
   "devDependencies": {

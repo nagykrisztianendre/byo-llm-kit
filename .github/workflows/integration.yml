@@ -1,0 +1,63 @@
+name: Integration Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  provider-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Mask provider secrets
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+        run: |
+          if [ -n "$HF_TOKEN" ]; then
+            echo "::add-mask::$HF_TOKEN"
+          fi
+          if [ -n "$REPLICATE_API_TOKEN" ]; then
+            echo "::add-mask::$REPLICATE_API_TOKEN"
+          fi
+
+      - name: Report provider coverage
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+        run: |
+          if [ -n "$HF_TOKEN" ]; then
+            echo "Hugging Face integration test: enabled"
+          else
+            echo "Hugging Face integration test: skipped (HF_TOKEN not configured)"
+          fi
+          if [ -n "$REPLICATE_API_TOKEN" ]; then
+            echo "Replicate integration test: enabled"
+          else
+            echo "Replicate integration test: skipped (REPLICATE_API_TOKEN not configured)"
+          fi
+
+      - name: Run integration tests
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL: ${{ secrets.HF_MODEL }}
+          HF_PROVIDER: ${{ secrets.HF_PROVIDER }}
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          REPLICATE_MODEL: ${{ secrets.REPLICATE_MODEL }}
+        run: pnpm test:integration

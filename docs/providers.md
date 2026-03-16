@@ -55,3 +55,9 @@ pnpm dev
 - Keep provider calls server-side.
 - Do not commit secrets; use Codespaces secrets or local environment variables.
 - For first-time setup, always confirm behavior in mock mode before enabling external providers.
+
+## Optional integration validation
+
+For real-provider validation in GitHub Actions, use the manual integration workflow (`.github/workflows/integration.yml`). It runs only on `workflow_dispatch` and executes provider integration tests under `tests/integration/`.
+
+If `HF_TOKEN` or `REPLICATE_API_TOKEN` is absent, that provider's integration test is skipped rather than failing unrelated checks.
