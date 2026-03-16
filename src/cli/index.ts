@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import { runEvaluationCommand } from "../eval/runEvaluation.js";
 import { providerRegistry } from "../providers/router.js";
 import { listPromptNames, runPrompt, type CliIO } from "./runPrompt.js";
+import { runVerifyInstall } from "../../scripts/verify-install.js";
 
 const PROVIDERS = Object.keys(providerRegistry);
 
@@ -50,6 +51,7 @@ function formatHelp(): string {
     "Commands:",
     "  byo-llm run <promptName> <inputText> [--version <version>] [--provider <name>] [--model <name>]",
     "  byo-llm eval <promptName> [--provider <name>] [--version <version>] [--input-file <file>] [--output <file>]",
+    "  byo-llm verify",
     "  byo-llm list-prompts",
     "  byo-llm --help",
     "",
@@ -107,6 +109,10 @@ export async function runCli(
     }
 
     return runEvaluationCommand(promptName, flags, io);
+  }
+
+  if (command === "verify") {
+    return runVerifyInstall(io);
   }
 
   io.error(`Unknown command: ${command}`);

@@ -13,20 +13,36 @@ This template includes:
 - A Next.js App Router example for production-style integration.
 - CI-friendly scripts for lint, typecheck, test, and build.
 
-## 10-minute quickstart (GitHub Codespaces)
+## 10-minute quickstart
 
-1. Open this repository in **GitHub Codespaces**.
-2. In the terminal, install dependencies:
+This quickstart works in **GitHub Codespaces** and local development with no provider keys.
+
+1. Install dependencies:
    ```bash
    pnpm install
+   ```
+2. Build the project:
+   ```bash
+   pnpm build
    ```
 3. Start the example app in default mock mode:
    ```bash
    pnpm dev
    ```
-4. Open the forwarded port (`3000`) and submit a prompt in the UI.
+4. In a second terminal, verify your installation:
+   ```bash
+   byo-llm verify
+   ```
 
-That flow works without any API keys.
+Expected output includes:
+
+- `✔ Node version OK`
+- `✔ Dependencies installed`
+- `✔ Mock provider working`
+- `✔ Prompt execution successful`
+- `BYO-LLM Kit is ready.`
+
+That flow is deterministic and works without any API keys.
 
 ## Run the example app
 
@@ -222,6 +238,7 @@ All documentation for GitHub Pages lives under [`docs/`](docs/):
 - Codespaces setup: `docs/getting-started.md`
 - Provider setup: `docs/providers.md`
 - Testing strategy: `docs/testing.md`
+- Troubleshooting: `docs/troubleshooting.md`
 - Example applications: `docs/examples.md`
 
 ## Golden tests for prompts
