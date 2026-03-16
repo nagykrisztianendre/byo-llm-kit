@@ -2,40 +2,15 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { HuggingFaceProvider } from "../../dist/src/providers/hf.js";
-import { MockProvider } from "../../dist/src/providers/mock.js";
-import { ReplicateProvider } from "../../dist/src/providers/replicate.js";
+import { generateText } from "../../dist/src/generateText.js";
+import { loadConfig } from "../../dist/src/config/loadConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const indexHtmlPath = join(__dirname, "public", "index.html");
 const DEFAULT_PORT = 3000;
 
-function getProviderName() {
-  const configured = (process.env.WEB_PROVIDER ?? "mock").toLowerCase();
-
-  if (["huggingface", "replicate", "mock"].includes(configured)) {
-    return configured;
-  }
-
-  return "mock";
-}
-
-function createProvider() {
-  const providerName = getProviderName();
-
-  if (providerName === "huggingface") {
-    return new HuggingFaceProvider();
-  }
-
-  if (providerName === "replicate") {
-    return new ReplicateProvider();
-  }
-
-  return new MockProvider();
-}
-
-const provider = createProvider();
+const config = loadConfig();
 
 async function readJsonBody(request) {
   const chunks = [];
@@ -65,7 +40,7 @@ function sendJson(response, statusCode, body) {
 async function handleGenerate(request, response) {
   try {
     const { prompt } = await readJsonBody(request);
-    const result = await provider.generateText({ prompt });
+    const result = await generateText({ prompt }, config);
     sendJson(response, 200, result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
@@ -77,7 +52,7 @@ const server = createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://localhost");
 
   if (request.method === "GET" && url.pathname === "/health") {
-    return sendJson(response, 200, { ok: true, provider: provider.name });
+    return sendJson(response, 200, { ok: true, provider: config.provider });
   }
 
   if (request.method === "POST" && url.pathname === "/api/generate") {
@@ -98,6 +73,6 @@ const server = createServer(async (request, response) => {
 const port = Number(process.env.PORT ?? DEFAULT_PORT);
 server.listen(port, () => {
   process.stdout.write(
-    `web example listening on http://0.0.0.0:${port} (provider=${provider.name})\n`,
+    `web example listening on http://0.0.0.0:${port} (provider=${config.provider})\n`,
   );
 });
