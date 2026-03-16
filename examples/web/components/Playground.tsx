@@ -1,12 +1,26 @@
-import { renderPrompt } from "../../../src/prompts/registry.js";
+import {
+  getLatestPromptVersion,
+  listPromptVersions,
+  renderPrompt,
+} from "../../../src/prompts/registry.js";
 import type { ProviderName } from "../../../src/providers/types.js";
 
 const providerOptions: ProviderName[] = ["mock", "huggingface", "replicate"];
+
 const promptTemplates = {
-  summarize: renderPrompt("summarize", {
-    text: "Paste source text here and click Generate to test the prompt.",
-    audience: "general",
-  }),
+  summarize: Object.fromEntries(
+    listPromptVersions("summarize").map((version) => [
+      version,
+      renderPrompt(
+        "summarize",
+        {
+          text: "Paste source text here and click Generate to test the prompt.",
+          audience: "general",
+        },
+        version,
+      ),
+    ]),
+  ),
 } as const;
 
 type PromptTemplateName = keyof typeof promptTemplates;
@@ -31,6 +45,13 @@ export function renderPlayground(): string {
     .map((name) => `<option value="${name}">${name}</option>`)
     .join("");
 
+  const promptVersionOptionMarkup = listPromptVersions("summarize")
+    .map(
+      (version) =>
+        `<option value="${version}" ${version === getLatestPromptVersion("summarize") ? "selected" : ""}>${version}</option>`,
+    )
+    .join("");
+
   const serializedTemplates = escapeHtml(JSON.stringify(promptTemplates));
 
   return `
@@ -46,6 +67,11 @@ export function renderPlayground(): string {
       <div class="field-row">
         <label for="promptTemplate">Prompt</label>
         <select id="promptTemplate" name="promptTemplate">${promptOptionMarkup}</select>
+      </div>
+
+      <div class="field-row">
+        <label for="promptVersion">Version</label>
+        <select id="promptVersion" name="promptVersion">${promptVersionOptionMarkup}</select>
       </div>
 
       <div class="field-row">
@@ -71,12 +97,13 @@ export const playgroundClientScript = `
   const form = document.getElementById("playground-form");
   const providerInput = document.getElementById("provider");
   const promptTemplateInput = document.getElementById("promptTemplate");
+  const promptVersionInput = document.getElementById("promptVersion");
   const promptInput = document.getElementById("prompt");
   const resultOutput = document.getElementById("result");
   const errorOutput = document.getElementById("error");
   const templateScript = document.getElementById("prompt-templates");
 
-  if (!form || !providerInput || !promptTemplateInput || !promptInput || !resultOutput || !errorOutput || !templateScript) {
+  if (!form || !providerInput || !promptTemplateInput || !promptVersionInput || !promptInput || !resultOutput || !errorOutput || !templateScript) {
     return;
   }
 
@@ -84,17 +111,22 @@ export const playgroundClientScript = `
 
   function syncPromptFromTemplate() {
     const selectedTemplate = promptTemplateInput.value;
-    if (templates[selectedTemplate] && !promptInput.value.trim()) {
-      promptInput.value = templates[selectedTemplate];
+    const selectedVersion = promptVersionInput.value;
+    if (templates[selectedTemplate] && templates[selectedTemplate][selectedVersion] && !promptInput.value.trim()) {
+      promptInput.value = templates[selectedTemplate][selectedVersion];
     }
   }
 
-  promptTemplateInput.addEventListener("change", () => {
+  function onTemplateOrVersionChange() {
     const selectedTemplate = promptTemplateInput.value;
-    if (templates[selectedTemplate]) {
-      promptInput.value = templates[selectedTemplate];
+    const selectedVersion = promptVersionInput.value;
+    if (templates[selectedTemplate] && templates[selectedTemplate][selectedVersion]) {
+      promptInput.value = templates[selectedTemplate][selectedVersion];
     }
-  });
+  }
+
+  promptTemplateInput.addEventListener("change", onTemplateOrVersionChange);
+  promptVersionInput.addEventListener("change", onTemplateOrVersionChange);
 
   syncPromptFromTemplate();
 
