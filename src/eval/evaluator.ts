@@ -92,7 +92,7 @@ export async function evaluatePrompt(
 
     for (const version of options.versions) {
       const prompt = getPrompt(options.promptName, version);
-      const renderedPrompt = prompt.build({ text: item.input });
+      const renderedPrompt = prompt.build({ text: item.input } as never);
 
       for (const provider of options.providers) {
         const providerConfig = { ...loadConfig(), provider };

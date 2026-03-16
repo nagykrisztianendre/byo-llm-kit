@@ -141,6 +141,26 @@ LLM_PROVIDER=replicate REPLICATE_API_TOKEN=your_token REPLICATE_MODEL=owner/mode
 
 You can still switch providers from the UI selector (`mock`, `huggingface`, `replicate`) for each generation request.
 
+## Production AI Feature Examples
+
+The repository now includes a production-oriented use-case pack under [`examples/use-cases`](./examples/use-cases):
+
+- **Article Summarizer**: summarize long-form content into key points and an action item.
+- **Email Generator**: draft context-aware emails with tone, audience, and purpose controls.
+- **Product Description Generator**: create marketing-ready copy from compact product details.
+- **Document Q&A**: answer targeted questions from document text or a local file.
+
+Run examples in default mock mode (no keys required):
+
+```bash
+byo-llm run summarize "Long article text"
+byo-llm run email-generator "Write a follow-up email after a job interview"
+byo-llm run product-description "Wireless headphones with 30h battery"
+byo-llm run document-qa --file examples/use-cases/document-qa/example-doc.txt --question "What is the warranty period?"
+```
+
+See full usage guidance in [`docs/use-cases.md`](./docs/use-cases.md).
+
 ## Security and privacy guidance
 
 This is a BYO-key template: provider credentials stay in your infrastructure.
@@ -266,6 +286,7 @@ All documentation for GitHub Pages lives under [`docs/`](docs/):
 - Testing strategy: `docs/testing.md`
 - Troubleshooting: `docs/troubleshooting.md`
 - Example applications: `docs/examples.md`
+- Use-case pack guide: `docs/use-cases.md`
 
 ## Golden tests for prompts
 

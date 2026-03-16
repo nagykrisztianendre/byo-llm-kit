@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Quarterly Product Update",
+    "text": "In Q2 we shipped onboarding improvements, reduced median support response time by 18%, and released usage analytics to all Pro plans. Customer interviews showed that setup speed and easier reporting were the top requested areas. Next quarter priorities include SSO rollout, mobile dashboard parity, and expanded in-app guidance."
+  },
+  {
+    "title": "Engineering Retrospective",
+    "text": "The team improved deployment reliability by introducing canary checks and rollback automation. Incident count dropped from 7 to 3 month-over-month. The biggest bottleneck remains flaky end-to-end tests, so the team plans to isolate unstable flows and improve fixture quality."
+  }
+]

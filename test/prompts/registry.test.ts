@@ -9,7 +9,14 @@ import {
 
 describe("prompt registry", () => {
   it("loads discoverable prompts", () => {
-    expect(Object.keys(promptRegistry)).toContain("summarize");
+    expect(Object.keys(promptRegistry)).toEqual(
+      expect.arrayContaining([
+        "summarize",
+        "email-generator",
+        "product-description",
+        "document-qa",
+      ]),
+    );
 
     const prompt = getPrompt("summarize");
     expect(prompt.name).toBe("summarize");
@@ -43,5 +50,29 @@ describe("prompt registry", () => {
     expect(result).toContain(
       "BYO-LLM kit provides a provider-agnostic TypeScript scaffold.",
     );
+  });
+
+  it("renders production use-case prompts", () => {
+    expect(
+      renderPrompt("email-generator", {
+        request: "Write a follow-up email after a job interview",
+        tone: "warm",
+        audience: "hiring manager",
+        purpose: "thank them and restate fit",
+      }),
+    ).toContain("Subject: <subject line>");
+
+    expect(
+      renderPrompt("product-description", {
+        productInput: "Wireless headphones with 30h battery",
+      }),
+    ).toContain("Product details:");
+
+    expect(
+      renderPrompt("document-qa", {
+        documentText: "Warranty period: 24 months",
+        question: "What is the warranty period?",
+      }),
+    ).toContain("Question:");
   });
 });

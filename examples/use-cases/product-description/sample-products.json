@@ -1,0 +1,10 @@
+[
+  {
+    "product": "Wireless headphones",
+    "features": ["30h battery", "active noise cancellation", "quick charge"]
+  },
+  {
+    "product": "Smart standing desk",
+    "features": ["quiet motor", "4 memory presets", "anti-collision sensor"]
+  }
+]

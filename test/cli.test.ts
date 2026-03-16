@@ -30,6 +30,72 @@ describe("CLI", () => {
     expect(logs[0]).toContain("Long text");
   });
 
+  it("runs production use-case prompts in mock mode", async () => {
+    const emailLogs: string[] = [];
+    const emailErrors: string[] = [];
+
+    const emailStatus = await runCli(
+      [
+        "run",
+        "email-generator",
+        "Write a follow-up email after a job interview",
+        "--tone",
+        "warm",
+        "--audience",
+        "hiring manager",
+        "--purpose",
+        "thank them and restate fit",
+      ],
+      {
+        log: (message) => emailLogs.push(message),
+        error: (message) => emailErrors.push(message),
+      },
+    );
+
+    expect(emailStatus).toBe(0);
+    expect(emailErrors).toEqual([]);
+    expect(emailLogs[0]).toContain("mock:");
+    expect(emailLogs[0]).toContain("Tone: warm.");
+
+    const productLogs: string[] = [];
+    const productErrors: string[] = [];
+
+    const productStatus = await runCli(
+      ["run", "product-description", "Wireless headphones with 30h battery"],
+      {
+        log: (message) => productLogs.push(message),
+        error: (message) => productErrors.push(message),
+      },
+    );
+
+    expect(productStatus).toBe(0);
+    expect(productErrors).toEqual([]);
+    expect(productLogs[0]).toContain("Product details:");
+
+    const docLogs: string[] = [];
+    const docErrors: string[] = [];
+
+    const docStatus = await runCli(
+      [
+        "run",
+        "document-qa",
+        "--file",
+        "examples/use-cases/document-qa/example-doc.txt",
+        "--question",
+        "What is the warranty period?",
+      ],
+      {
+        log: (message) => docLogs.push(message),
+        error: (message) => docErrors.push(message),
+      },
+    );
+
+    expect(docStatus).toBe(0);
+    expect(docErrors).toEqual([]);
+    expect(docLogs[0]).toContain("Question:");
+    expect(docLogs[0]).toContain("What is the warranty period?");
+  });
+
   it("lists prompts", async () => {
     const logs: string[] = [];
     const errors: string[] = [];
@@ -41,7 +107,10 @@ describe("CLI", () => {
 
     expect(status).toBe(0);
     expect(errors).toEqual([]);
-    expect(logs).toEqual(["summarize"]);
+    expect(logs[0]).toContain("summarize");
+    expect(logs[0]).toContain("email-generator");
+    expect(logs[0]).toContain("product-description");
+    expect(logs[0]).toContain("document-qa");
   });
 
   it("applies provider flag override", async () => {

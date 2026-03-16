@@ -1,3 +1,12 @@
+import { documentQaV1Prompt, type DocumentQaPromptArgs } from "./documentQa.js";
+import {
+  emailGeneratorV1Prompt,
+  type EmailGeneratorPromptArgs,
+} from "./emailGenerator.js";
+import {
+  productDescriptionV1Prompt,
+  type ProductDescriptionPromptArgs,
+} from "./productDescription.js";
 import {
   summarizeV1Prompt,
   summarizeV2Prompt,
@@ -14,14 +23,26 @@ export const promptRegistry = {
     [summarizeV1Prompt.version]: summarizeV1Prompt,
     [summarizeV2Prompt.version]: summarizeV2Prompt,
   },
+  "email-generator": {
+    [emailGeneratorV1Prompt.version]: emailGeneratorV1Prompt,
+  },
+  "product-description": {
+    [productDescriptionV1Prompt.version]: productDescriptionV1Prompt,
+  },
+  "document-qa": {
+    [documentQaV1Prompt.version]: documentQaV1Prompt,
+  },
 } as const satisfies PromptRegistry;
 
 export type PromptName = keyof typeof promptRegistry;
 
 type PromptDefinitionByName = (typeof promptRegistry)[PromptName][string];
 
-interface PromptArgsByName {
+export interface PromptArgsByName {
   summarize: SummarizePromptArgs;
+  "email-generator": EmailGeneratorPromptArgs;
+  "product-description": ProductDescriptionPromptArgs;
+  "document-qa": DocumentQaPromptArgs;
 }
 
 function resolveLatestVersion(versions: PromptVersionRegistry): string {
@@ -71,7 +92,7 @@ export function renderPrompt<TName extends PromptName>(
   args: PromptArgsByName[TName],
   version = "latest",
 ): string {
-  return getPrompt(name, version).build(args);
+  return getPrompt(name, version).build(args as never);
 }
 
 export function getLatestPromptVersion(name: PromptName): string {
