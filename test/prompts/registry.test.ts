@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  getLatestPromptVersion,
   getPrompt,
+  listPromptVersions,
   promptRegistry,
   renderPrompt,
 } from "../../src/prompts/registry.js";
@@ -11,14 +13,28 @@ describe("prompt registry", () => {
 
     const prompt = getPrompt("summarize");
     expect(prompt.name).toBe("summarize");
-    expect(prompt.version).toBe("1.0.0");
+    expect(prompt.version).toBe("v2");
+    expect(prompt.description).toContain("key takeaways");
+  });
+
+  it("resolves latest version and supports explicit version lookup", () => {
+    expect(listPromptVersions("summarize")).toEqual(["v1", "v2"]);
+    expect(getLatestPromptVersion("summarize")).toBe("v2");
+
+    const v1Prompt = getPrompt("summarize", "v1");
+    expect(v1Prompt.version).toBe("v1");
+    expect(v1Prompt.description).toBe("Summarize a long text");
   });
 
   it("renders summarize prompt with expected structure", () => {
-    const result = renderPrompt("summarize", {
-      text: "BYO-LLM kit provides a provider-agnostic TypeScript scaffold.",
-      audience: "product managers",
-    });
+    const result = renderPrompt(
+      "summarize",
+      {
+        text: "BYO-LLM kit provides a provider-agnostic TypeScript scaffold.",
+        audience: "product managers",
+      },
+      "v1",
+    );
 
     expect(result).toContain("You are a concise assistant.");
     expect(result).toContain("Target audience: product managers.");

@@ -9,6 +9,7 @@ import {
 export interface RunPromptOptions {
   provider?: string;
   model?: string;
+  version?: string;
 }
 
 export interface CliIO {
@@ -31,7 +32,7 @@ export async function runPrompt(
     );
   }
 
-  const prompt = getPrompt(promptName as PromptName);
+  const prompt = getPrompt(promptName as PromptName, options.version);
   const renderedPrompt = prompt.build({ text: inputText } as never);
 
   const config = loadConfig();

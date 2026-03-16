@@ -9,6 +9,7 @@ const PROVIDERS = Object.keys(providerRegistry);
 interface ParsedRunFlags {
   provider?: string;
   model?: string;
+  version?: string;
 }
 
 function parseRunFlags(flags: string[]): ParsedRunFlags {
@@ -29,6 +30,12 @@ function parseRunFlags(flags: string[]): ParsedRunFlags {
       continue;
     }
 
+    if (flag === "--version") {
+      parsed.version = flags[index + 1];
+      index += 1;
+      continue;
+    }
+
     throw new Error(`Unknown option: ${flag}`);
   }
 
@@ -40,7 +47,7 @@ function formatHelp(): string {
     "byo-llm CLI",
     "",
     "Commands:",
-    "  byo-llm run <promptName> <inputText> [--provider <name>] [--model <name>]",
+    "  byo-llm run <promptName> <inputText> [--version <version>] [--provider <name>] [--model <name>]",
     "  byo-llm list-prompts",
     "  byo-llm --help",
     "",
@@ -70,7 +77,7 @@ export async function runCli(
 
     if (!promptName || !inputText) {
       io.error(
-        "Usage: byo-llm run <promptName> <inputText> [--provider <name>] [--model <name>]",
+        "Usage: byo-llm run <promptName> <inputText> [--version <version>] [--provider <name>] [--model <name>]",
       );
       return 1;
     }

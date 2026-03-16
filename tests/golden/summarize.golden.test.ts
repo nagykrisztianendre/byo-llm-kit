@@ -43,7 +43,7 @@ describe("summarize prompt golden", () => {
     const prompt = getPrompt(fixture.promptName);
 
     expect(prompt.name).toBe("summarize");
-    expect(prompt.version).toBe("1.0.0");
+    expect(prompt.version).toBe("v2");
   });
 
   it("matches expected output structure in mock mode", async () => {

@@ -7,7 +7,9 @@ export type {
   PromptArgs,
   PromptBuilder,
   PromptDefinition,
+  PromptMeta,
   PromptRegistry,
+  PromptVersionRegistry,
 } from "./prompts/types.js";
 export { summarizePrompt } from "./prompts/summarize.js";
 export type { SummarizePromptArgs } from "./prompts/summarize.js";
