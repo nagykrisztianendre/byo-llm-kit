@@ -1,0 +1,30 @@
+# BYO-LLM demo output
+Generated at: 2026-03-16T08:07:03.179Z
+## CLI prompt run
+$ byo-llm run summarize "Long article text"
+mock:b481406b45f69801:You are a concise assistant.
+Target audience: general.
+Provide a short summary with 3 bullet points and a final action item.
+Text to summarize:
+Long article text
+
+Exit code: 0
+
+## CLI evaluation
+$ byo-llm eval summarize --provider mock --version v1
+Prompt: summarize
+
+Case 1:
+Input: This is a sample article about product updates, team priorities, and user feedback trends over the quarter.
+
+Provider results:
+mock (v1):
+  output: mock:c8abee113ea39118:You are a concise assistant.
+Target audience: general.
+Provide a short summary using 3 bullet points.
+Text to summarize:
+This is a sample article about product updates, team priorities, and user feedback trends over the quarter.
+  latency: 0.19ms
+  metadata: {"provider":"mock","model":"mock-llm-v1","promptHash":"c8abee113ea39118","maxTokens":128,"temperature":0}
+
+Exit code: 0

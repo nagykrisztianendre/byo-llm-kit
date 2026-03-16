@@ -189,6 +189,32 @@ Dataset format (`eval-datasets/summarize.json`):
 
 The default provider is `mock`, so evaluation works without API keys in local development and CI.
 
+## Demo
+
+Use these commands to demonstrate core BYO-LLM kit workflows in deterministic mock mode.
+
+Run a prompt with the CLI:
+
+```bash
+byo-llm run summarize "Long article text"
+```
+
+Run an evaluation for the same prompt:
+
+```bash
+byo-llm eval summarize
+```
+
+To generate a reproducible terminal transcript used by demo assets:
+
+```bash
+pnpm build
+node dist/scripts/generate-demo.js
+```
+
+See [`docs/demo-assets.md`](./docs/demo-assets.md) for screenshot and listing asset instructions.
+Demo assets in this repository are text-only and reproducible (no binary files are committed).
+
 ## Optional provider integration tests (manual)
 
 Default CI stays fully mock-only. Real-provider checks are separated into an **opt-in GitHub Actions workflow** that runs only when manually triggered.
