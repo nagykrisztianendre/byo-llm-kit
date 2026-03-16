@@ -2,7 +2,8 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { generateText } from "../../dist/src/generateText.js";
+import { handleGenerateRequest } from "../../dist/examples/web/api/generate.js";
+import { renderPlaygroundPage } from "../../dist/examples/web/pages/playground.js";
 import { loadConfig } from "../../dist/src/config/loadConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,40 +13,10 @@ const DEFAULT_PORT = 3000;
 
 const config = loadConfig();
 
-async function readJsonBody(request) {
-  const chunks = [];
-  for await (const chunk of request) {
-    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-  }
-
-  const payload = Buffer.concat(chunks).toString("utf8");
-  if (!payload) {
-    throw new Error("Request body is required");
-  }
-
-  const parsed = JSON.parse(payload);
-  if (typeof parsed.prompt !== "string" || parsed.prompt.trim().length === 0) {
-    throw new Error("prompt must be a non-empty string");
-  }
-
-  return { prompt: parsed.prompt };
-}
-
 function sendJson(response, statusCode, body) {
   response.statusCode = statusCode;
   response.setHeader("content-type", "application/json; charset=utf-8");
   response.end(JSON.stringify(body));
-}
-
-async function handleGenerate(request, response) {
-  try {
-    const { prompt } = await readJsonBody(request);
-    const result = await generateText({ prompt }, config);
-    sendJson(response, 200, result);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    sendJson(response, 400, { error: message });
-  }
 }
 
 const server = createServer(async (request, response) => {
@@ -56,7 +27,7 @@ const server = createServer(async (request, response) => {
   }
 
   if (request.method === "POST" && url.pathname === "/api/generate") {
-    return handleGenerate(request, response);
+    return handleGenerateRequest(request, response, config);
   }
 
   if (request.method === "GET" && url.pathname === "/") {
@@ -64,6 +35,13 @@ const server = createServer(async (request, response) => {
     response.statusCode = 200;
     response.setHeader("content-type", "text/html; charset=utf-8");
     response.end(html);
+    return;
+  }
+
+  if (request.method === "GET" && url.pathname === "/playground") {
+    response.statusCode = 200;
+    response.setHeader("content-type", "text/html; charset=utf-8");
+    response.end(renderPlaygroundPage());
     return;
   }
 

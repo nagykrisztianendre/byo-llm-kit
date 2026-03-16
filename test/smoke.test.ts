@@ -53,18 +53,55 @@ describe("web example smoke", () => {
       {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ prompt: "hello from smoke test" }),
+        body: JSON.stringify({
+          provider: "mock",
+          prompt: "hello from smoke test",
+        }),
       },
     );
 
     const generateJson = (await generateResponse.json()) as {
       text: string;
-      metadata: { provider: string };
+      provider: string;
+      model?: string;
     };
 
     expect(generateResponse.status).toBe(200);
-    expect(generateJson.metadata.provider).toBe("mock");
+    expect(generateJson.provider).toBe("mock");
+    expect(generateJson.model).toBe("mock-llm-v1");
     expect(generateJson.text).toContain("hello from smoke test");
+  });
+
+  it("uses selected provider from request body", async () => {
+    const generateResponse = await fetch(
+      `http://127.0.0.1:${TEST_PORT}/api/generate`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          provider: "replicate",
+          prompt: "hello from smoke test",
+        }),
+      },
+    );
+
+    const generateJson = (await generateResponse.json()) as { error: string };
+
+    expect(generateResponse.status).toBe(400);
+    expect(generateJson.error).toContain("REPLICATE_API_TOKEN is required");
+  });
+
+  it("serves playground page with server-side API usage", async () => {
+    const pageResponse = await fetch(
+      `http://127.0.0.1:${TEST_PORT}/playground`,
+    );
+    const pageHtml = await pageResponse.text();
+
+    expect(pageResponse.status).toBe(200);
+    expect(pageHtml).toContain("Prompt Playground");
+    expect(pageHtml).toContain('fetch("/api/generate"');
+    expect(pageHtml).not.toContain("HF_TOKEN");
+    expect(pageHtml).not.toContain("REPLICATE_API_TOKEN");
   });
 });
 
