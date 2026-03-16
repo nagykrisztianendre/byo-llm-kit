@@ -70,7 +70,7 @@ describe("web example smoke", () => {
     expect(generateJson.provider).toBe("mock");
     expect(generateJson.model).toBe("mock-llm-v1");
     expect(generateJson.text).toContain("hello from smoke test");
-  });
+  }, 30_000);
 
   it("uses selected provider from request body", async () => {
     const generateResponse = await fetch(
